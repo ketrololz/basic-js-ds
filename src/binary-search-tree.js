@@ -57,24 +57,84 @@ class BinarySearchTree {
     }
   }
 
-  find(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  find(data) {
+    return findNode(this.treeRoot, data)
+    
+    function findNode(node, data) {
+
+      if (node.data === data) {
+        return node;
+      }
+      
+      if (data > node.data) {
+        return node.right ? findNode(node.right, data) : null;
+      } else {
+        return node.left ? findNode(node.left, data) : null;
+      }
+    }
   }
 
-  remove(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  remove(data) {
+    this.treeRoot = removeNode(this.treeRoot, data);
+
+    function removeNode(node, data) {
+      if (!node) {
+        return null;
+      }
+
+      if (data > node.data) {
+        node.right = removeNode(node.right, data);
+        return node;
+      }
+
+      if (data < node.data) {
+        node.left = removeNode(node.left, data);
+        return node;
+      }
+
+      if (data === node.data) {
+        if (!node.right) {
+          node = node.left;
+          return node;
+        } 
+
+        if (!node.left) {
+          node = node.right;
+          return node;
+        }
+
+        if (!node.left && !node.right) {
+          return null;
+        }
+        
+        const minRightNodeData = findMin(node.right).data;
+        node.data = minRightNodeData;
+        node.right = removeNode(node.right, minRightNodeData);
+
+        function findMin(node) {
+          return node.left ? findMin(node.left) : node;
+        }
+
+        return node;
+      }
+
+    }
   }
 
   min() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+    return findMin(this.treeRoot).data 
+
+    function findMin(node) {
+      return node.left ? findMin(node.left) : node;
+    }
   }
 
   max() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+    return findMax(this.treeRoot).data
+
+    function findMax(node) {
+      return node.right ? findMax(node.right) : node;
+    }
   }
 }
 
